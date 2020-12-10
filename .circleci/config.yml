@@ -1,0 +1,17 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
+version: 2.1
+# Use a package of configuration called an orb.
+jobs:
+  build:
+    docker:
+      - image: cimg/base:2020.01
+
+    steps:
+      - checkout
+
+      - setup_remote_docker:
+          version: 19.03.13
+      
+      - run: |
+          docker build -t jethred/docker-react -f Dockerfile.dev .
+          docker run -e CI=true jethred/docker-react npm run test
