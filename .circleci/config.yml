@@ -5,6 +5,9 @@ jobs:
   build:
     docker:
       - image: cimg/base:2020.01
+        auth:
+          username: jethred
+          password: $DOCKERHUB_PASSWORD
 
     steps:
       - checkout
@@ -12,6 +15,10 @@ jobs:
       - setup_remote_docker:
           version: 19.03.13
       
+      # build and push Docker image
       - run: |
-          docker build -t jethred/docker-react -f Dockerfile.dev .
-          docker run -e CI=true jethred/docker-react npm run test
+          TAG=0.1.$CIRCLE_BUILD_NUM
+          docker build -t jethred/docker-react:$TAG -f Dockerfile.dev .
+          echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+          docker push jethred/docker-react:$TAG
+          docker run -e CI=true jethred/docker-react:$TAG npm run test
