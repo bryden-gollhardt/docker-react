@@ -24,21 +24,6 @@ jobs:
           echo $DOCKER_PASS | docker login --username $DOCKER_USER --password-stdin
           docker push jethred/docker-react:$TAG
           docker run -e CI=true jethred/docker-react:$TAG npm run test
-          rm Dockerfile
-          mv Dockerfile.dev Dockerfile
-  
-  eb-demo:
-    docker:
-      - image: 'cimg/base:stable'
-    steps:
-      - checkout
-      - eb/setup
-      - run:
-          command: |
-            eb create my-environment
-            eb deploy my-environment
-            eb status
-          name: You may now use the EB CLI within this job
 
 workflows:
   elastic-beanstalk-workflow:
@@ -46,7 +31,8 @@ workflows:
       - buildAndTest
       - aws-elastic-beanstalk/deploy:
           context: aws-creds
-          environment-name: docker-react
+          environment-name: docker-react-2
+          image: jethred/docker-react:0.1.$CIRCLE_BUILD_NUM
           filters:
             branches:
               only:
