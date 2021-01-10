@@ -30,7 +30,7 @@ workflows:
       - buildAndTest
       - aws-elastic-beanstalk/deploy:
           context: aws-creds
-          environment-name: DockerReact-env
+          environment-name: docker-react
           filters:
             branches:
               only:
