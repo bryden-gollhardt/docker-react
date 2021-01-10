@@ -32,13 +32,11 @@ workflows:
     jobs:
       - buildAndTest
       - aws-elastic-beanstalk/deploy:
-          app-dir: ~/frontend/circleci
           context: aws-creds
           environment-name: DockerReact-env
           filters:
             branches:
               only:
                 - master
-          label: version-<<pipeline.number>>
           requires:
             - buildAndTest
