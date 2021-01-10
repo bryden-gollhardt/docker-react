@@ -35,7 +35,6 @@ workflows:
           app-dir: ~/frontend/circleci
           context: aws-creds
           environment-name: DockerReact-env
-          image: cimg/base:2020.01
           filters:
             branches:
               only:
