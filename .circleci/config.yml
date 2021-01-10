@@ -19,7 +19,7 @@ jobs:
           version: 19.03.13
       # build and push Docker image
       - run: |
-          TAG=0.1.$CIRCLE_BUILD_NUM
+          TAG=latest
           docker build -t jethred/docker-react:$TAG -f Dockerfile.dev .
           echo $DOCKER_PASS | docker login --username $DOCKER_USER --password-stdin
           docker push jethred/docker-react:$TAG
@@ -32,7 +32,7 @@ workflows:
       - aws-elastic-beanstalk/deploy:
           context: aws-creds
           environment-name: docker-react-2
-          image: jethred/docker-react:0.1.$CIRCLE_BUILD_NUM
+          image: jethred/docker-react
           filters:
             branches:
               only:
