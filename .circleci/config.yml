@@ -33,7 +33,7 @@ workflows:
       - buildAndTest
       - eb/deploy:
           context: aws-creds
-          environment=name: DockerReact-env
+          environment-name: DockerReact-env
           filters:
             branches:
               only:
