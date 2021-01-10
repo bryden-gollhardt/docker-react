@@ -5,6 +5,7 @@ version: 2.1
 # Use a package of configuration called an orb.
 orbs:
   aws-elastic-beanstalk: circleci/aws-elastic-beanstalk@1.0.0
+  node: circleci/node@4.1.0
 jobs:
   buildAndTest:
     docker:
@@ -23,14 +24,18 @@ jobs:
           echo $DOCKER_PASS | docker login --username $DOCKER_USER --password-stdin
           docker push jethred/docker-react:$TAG
           docker run -e CI=true jethred/docker-react:$TAG npm run test
+          rm Dockerfile
+          mv Dockerfile.dev Dockerfile
 
 workflows:
   elastic-beanstalk-workflow:
     jobs:
       - buildAndTest
       - aws-elastic-beanstalk/deploy:
+          app-dir: ~/frontend/circleci
           context: aws-creds
           environment-name: DockerReact-env
+          image: cimg/base:2020.01
           filters:
             branches:
               only:
